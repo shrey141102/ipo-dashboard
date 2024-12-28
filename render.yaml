@@ -1,0 +1,22 @@
+services:
+  # Backend API
+  - type: web
+    name: ipo-dashboard-api
+    env: python
+    buildCommand: pip install -r requirements.txt
+    startCommand: cd backend && uvicorn server:app --host 0.0.0.0 --port $PORT
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.10.0
+
+  # Frontend
+  - type: web
+    name: ipo-dashboard-frontend
+    env: static
+    buildCommand: cd frontend && npm install && npm run build
+    staticPublishPath: ./frontend/dist
+    envVars:
+      - key: NODE_VERSION
+        value: 18
+      - key: VITE_API_URL
+        value: https://ipo-dashboard-api.onrender.com

@@ -1,0 +1,15 @@
+langchain_community
+beautifulsoup4
+langchain-unstructured
+unstructured-client
+unstructured
+unstructured[pdf]
+langchain-ollama
+python-magic
+fastapi
+pydantic
+pandas
+uvicorn
+python-multipart==0.0.9
+aiohttp==3.9.3
+python-dotenv==1.0.0
