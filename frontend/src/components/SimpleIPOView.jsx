@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from "../components/ui/card";
 import { TrendingUp, Calendar, DollarSign, Percent, ChevronDown, RefreshCw } from 'lucide-react';
-export const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:8000';
+const API_URL = import.meta.env.VITE_API_URL?.replace(/\/+$/, '') || 'http://localhost:8000';
 
 const SimpleIPOView = () => {
   const [data, setData] = useState([]);

@@ -39,36 +39,27 @@ async def refresh_data():
     try:
         print("Starting refresh process...")
 
-        # Get full paths
-        python_path = "/Library/Frameworks/Python.framework/Versions/3.10/bin/python3"
+        # Use python directly instead of full path
         webscrape_path = os.path.join(BASE_DIR, 'webscrape.py')
         formatter_path = os.path.join(BASE_DIR, 'formatter.py')
 
         print(f"Running webscrape.py")
-        # Run webscrape.py
         process1 = await asyncio.create_subprocess_exec(
-            python_path, webscrape_path,
+            'python', webscrape_path,  # Changed from python3 to python
             stdout=asyncio.subprocess.PIPE,
             stderr=asyncio.subprocess.PIPE,
             cwd=BASE_DIR
         )
         stdout1, stderr1 = await process1.communicate()
-        print(f"Webscrape output: {stdout1.decode()}")
-        if stderr1:
-            print(f"Webscrape error: {stderr1.decode()}")
 
-        print("Running formatter.py")
-        # Run formatter.py
+        # Same for formatter
         process2 = await asyncio.create_subprocess_exec(
-            python_path, formatter_path,
+            'python', formatter_path,  # Changed from python3 to python
             stdout=asyncio.subprocess.PIPE,
             stderr=asyncio.subprocess.PIPE,
             cwd=BASE_DIR
         )
         stdout2, stderr2 = await process2.communicate()
-        print(f"Formatter output: {stdout2.decode()}")
-        if stderr2:
-            print(f"Formatter error: {stderr2.decode()}")
 
         return {"message": "Data refreshed successfully"}
     except Exception as e:
