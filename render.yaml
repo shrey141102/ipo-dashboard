@@ -19,4 +19,4 @@ services:
       - key: NODE_VERSION
         value: 18
       - key: VITE_API_URL
-        value: https://ipo-dashboard-api.onrender.com
+        value: https://ipo-dashboard.onrender.com
