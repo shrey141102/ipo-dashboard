@@ -39,15 +39,16 @@ def parse_ipo_data(raw_text):
                     price = int(num_str[:max_split - 1])
 
                 gmp = round(price * (percentage / 100), 2)
-                listing_price = round(price + gmp, 2)
+                # listing_price = round(price + gmp, 2)
 
-                return price, gmp, listing_price
+                return price, gmp
 
-            match = re.search(r"(\d+)\s+\(([\d.]+)%\)", line)
+            match = re.search(r"(\d+(?:--\d+)?)\s+\(([\d.]+)%\)", line)
+            # re.search(r"(\d+)\s+\(([\d.]+)%\)", line)
             if match:
-                num_str = match.group(1)
+                num_str = match.group(1).replace("--", "00")
                 percentage = float(match.group(2))
-                price, gmp, listing_price = calculate_price_gmp_listing(num_str, percentage)
+                price, gmp = calculate_price_gmp_listing(num_str, percentage)
 
             ipo_price = price if price else None
 

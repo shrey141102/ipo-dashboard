@@ -9,54 +9,59 @@ const SimpleIPOView = () => {
   const [refreshing, setRefreshing] = useState(false);
 
   const fetchData = async () => {
-    try {
-      const response = await fetch('http://localhost:8000/api/ipos');
-      const jsonData = await response.json();
-      setData(jsonData);
-      if (jsonData.length > 0) {
-        setSelectedIPO(jsonData[0]);
-      }
-    } catch (error) {
-      console.error('Error loading data:', error);
+  try {
+    const response = await fetch(`${API_URL}/api/ipos`);
+    const jsonData = await response.json();
+    setData(jsonData);
+    if (jsonData.length > 0) {
+      setSelectedIPO(jsonData[0]);
     }
-  };
+  } catch (error) {
+    console.error('Error loading data:', error);
+  }
+};
 
   useEffect(() => {
     fetchData();
   }, []);
 
   const handleRefresh = async () => {
-    try {
-      setRefreshing(true);
-      // Call the refresh endpoint
-      const refreshResponse = await fetch('http://localhost:8000/api/refresh', {
-        method: 'POST'
-      });
+  try {
+    setRefreshing(true);
+    const refreshResponse = await fetch(`${API_URL}/api/refresh`, {
+      method: 'POST'
+    });
 
-      if (!refreshResponse.ok) {
-        throw new Error('Refresh failed');
-      }
-
-      // Refetch the data
-      await fetchData();
-    } catch (error) {
-      console.error('Error refreshing data:', error);
-    } finally {
-      setRefreshing(false);
+    if (!refreshResponse.ok) {
+      throw new Error('Refresh failed');
     }
-  };
 
-  const formatValue = (value, key) => {
+    await fetchData();
+  } catch (error) {
+    console.error('Error refreshing data:', error);
+  } finally {
+    setRefreshing(false);
+  }
+};
+
+ const formatValue = (value, key) => {
     if (value === null || value === undefined) return '-';
     if (typeof value === 'number') {
       if (key === 'ipo_size') return `₹ ${value.toLocaleString()} Cr`;
       if (key === 'ipo_price') return `₹ ${value.toLocaleString()}`;
       if (key === 'subscription_percent') return `${value.toLocaleString()}%`;
-      if (key === 'ipo_gmp') return `₹ ${value.toLocaleString()}`;
+      if (key === 'ipo_gmp') return `${value.toLocaleString()} (${getGMPPercentage(selectedIPO)})`; // Modified this line
       return value.toLocaleString();
     }
     return value;
-  };
+};
+
+// Add this new function to calculate GMP percentage
+const getGMPPercentage = (ipo) => {
+    if (!ipo || !ipo.ipo_price || !ipo.ipo_gmp) return '-';
+    const percentage = (ipo.ipo_gmp / ipo.ipo_price) * 100;
+    return `${percentage.toFixed(2)}%`;
+};
 
   const getStatusColor = (status) => {
     switch (status?.toLowerCase()) {
