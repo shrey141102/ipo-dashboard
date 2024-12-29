@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from "../components/ui/card";
 import { TrendingUp, Calendar, DollarSign, Percent, ChevronDown, RefreshCw } from 'lucide-react';
-export const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:8001';
+export const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:8000';
 
 const SimpleIPOView = () => {
   const [data, setData] = useState([]);
@@ -10,7 +10,7 @@ const SimpleIPOView = () => {
 
   const fetchData = async () => {
     try {
-      const response = await fetch('http://localhost:8001/api/ipos');
+      const response = await fetch('http://localhost:8000/api/ipos');
       const jsonData = await response.json();
       setData(jsonData);
       if (jsonData.length > 0) {
@@ -29,7 +29,7 @@ const SimpleIPOView = () => {
     try {
       setRefreshing(true);
       // Call the refresh endpoint
-      const refreshResponse = await fetch('http://localhost:8001/api/refresh', {
+      const refreshResponse = await fetch('http://localhost:8000/api/refresh', {
         method: 'POST'
       });
 
